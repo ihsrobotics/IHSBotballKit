@@ -1,0 +1,20 @@
+{
+    "CLAW_SERVO": 0,
+    "ARM_SERVO": 1,
+
+    "LEFT_TOPHAT": 0,
+    "RIGHT_TOPHAT": 1,
+
+    "LEFT_MOTOR": 2,
+    "RIGHT_MOTOR": 3,
+    
+    "LEFT_TOPHAT_BLACK": 3000,
+    "RIGHT_TOPHAT_BLACK": 3500,
+    "CREATE_TOPHAT_BLACK": 2000,
+
+    "CLAW_OPEN": 500,
+    "CLAW_CLOSED": 0,
+    "ARM_UP": 1000,
+    "ARM_STRAIGHT": 500,
+    "ARM_DOWN": 200
+}

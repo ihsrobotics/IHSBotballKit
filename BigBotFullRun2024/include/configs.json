@@ -1,0 +1,79 @@
+{
+    "bot": 4175, 
+
+    "CLAW_PORT": 0,
+    "ROD_SERVO_PORT": 1,
+    "SWEEPER_SERVO_PORT": 2,
+    "ARM_PORT": 3,
+
+    "SWEEPER_TOPHAT_PORT": 0,
+    "ROD_TOPHAT_PORT": 4,
+
+    "SWEEPER_LEFT": 2047,
+    "SWEEPER_RIGHT": 0,
+    "SWEEPER_CENTER": 1000,
+
+    "ARM_STRAIGHT_UP": 1200,
+    "ARM_STRAIGHT": 550,
+    "ARM_GRAB": 125,
+    "ARM_DOWN": 50,
+    "ARM_SWITCH": 361,
+    "ARM_DOWN_START": 150,
+    "ARM_ON_RACK": 500,
+    "ARM_ON_NOODLE_PIPE": 1150,
+    "ARM_TOP_NOODLE": 780,
+    "ARM_UPPER_NOODLE": 630,
+    "ARM_MIDDLE_NOODLE": 590,
+    "ARM_LOWER_NOODLE": 241,
+    "ARM_BOTTOM_NOODLE": 287,
+
+    "ARM_LAVA_RESET": 380,
+    "ARM_SWITCH_UP": 550,
+    "ARM_SHELF": 920,
+
+    "CLAW_OPEN": 903,
+    "CLAW_CLOSED": 280,
+    "CLAW_DRAWER": 200,
+    "CLAW_STRAIGHT": 450,
+    "CLAW_DRAWER_CLOSED": 130,
+    "CLAW_GRAB": 0,
+
+    "ROD_LEFT": 0,
+    "ROD_RIGHT": 2047,
+    "ROD_CENTER": 1023,
+    "ROD_LINE_RIGHT": 908,
+    "ROD_LINE": 787,
+    "ROD_SIDE": 2047,
+    "ROD_ANGLED_DRAWER": 1104,
+    "ROD_DRAWER": 1834,
+    "ROD_LEFT_SIDE": 0,
+    "ROD_YANNIS_GRAB": 1220,
+    "ROD_STRAIGHT": 866,
+
+    "ROD_TOPHAT_BLACK": 3000,
+    "SENSOR_BLACK": 3000,
+    "SENSOR_WHITE": 2500,
+    "BLACK": 2000,
+    "SWEEPER_BLACk": 2000,
+    "NEW_BLACK": 2900,
+    
+    "LAVA_RESET": 150,
+    "LAVA_OPEN": 145,
+
+    "LARGE_LAVA_HEIGHT": 560,
+    "LARGE_LAVA_DROP": 490,
+
+    "MEDIUM_LAVA_HEIGHT": 395,
+    "MEDIUM_LAVA_DROP": 400,
+    "SHORT_LAVA_HEIGHT": 260,
+
+    "MEDIUM_LAVA_ANGLE": 570,
+    "LARGE_LAVA_ANGLE": 420,
+
+    "lavatubes_camera_crop_right": 500,
+    "lavatubes_camera_crop_bottom": 200,
+    "lavatubes_hough_lines_rho_resolution": 5,
+    "lavatubes_hough_lines_thresh": 130,
+    "lavatubes_hough_lines_optimization_slope_exponent": 30,
+    "lavatubes_hough_lines_optimization_distance_coefficient": 100
+}
