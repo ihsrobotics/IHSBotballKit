@@ -4,6 +4,7 @@ from tkinter import ttk as _ttk
 import subprocess as _subprocess
 import time as _time
 import threading as _threading
+from typing import Union as _Union
 
 _LARGEFONT = ("Verdana", 35)
 _MEDIUMFONT = ("Verdana", 20)
@@ -58,13 +59,13 @@ class IHSRunner(_tk.Tk):
     def _set_calibrated_light_thresh(self, new_value: int):
         self._calibrated_light_thresh = new_value
 
-    def _show_frame(self, page: _tk.Frame):
+    def _show_frame(self, page: _Union[type[_StartPage], type[_ResetPage], type[_RunPage]]):
         frame = self._frames[page]
         frame.tkraise()
 
 
 class _StartPage(_tk.Frame):
-    def __init__(self, parent: _tk.Frame, controller: _tk.Tk):
+    def __init__(self, parent: _tk.Frame, controller: IHSRunner):
         _tk.Frame.__init__(self, parent)
         for i in range(3):
             self.grid_columnconfigure(i, weight=1)
@@ -79,7 +80,7 @@ class _StartPage(_tk.Frame):
 
         info_label = _ttk.Label(
             self,
-            text=f"light port: {controller._light_port}\nreset proram: {controller._reset_file_path}",
+            text= f"light port: {controller._light_port}\nreset proram: {controller._reset_file_path}",
             font=_SMALLFONT,
         )
         info_label.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
@@ -88,16 +89,17 @@ class _StartPage(_tk.Frame):
             self, text="Please make a decidion: ", font=_MEDIUMFONT, anchor="center"
         )
         buttons_label.grid(row=2, column=0, padx=10, pady=10, columnspan=3)
-
+        
+        def quit() -> None:
+            controller._stop_updating_sensor_values()
+            print("quit")
+            self.master.quit()
+            exit()
+        
         quit_button = _ttk.Button(
             self,
             text="Quit",
-            command=lambda: (
-                controller._stop_updating_sensor_values(),
-                print("quit"),
-                self.master.quit(),
-                exit(),
-            ),
+            command= quit,
             padding=_PADDING20,
             style="Small.TButton",
         )
@@ -123,7 +125,7 @@ class _StartPage(_tk.Frame):
 
 
 class _ResetPage(_tk.Frame):
-    def __init__(self, parent: _tk.Frame, controller: _tk.Tk):
+    def __init__(self, parent: _tk.Frame, controller: IHSRunner):
 
         _tk.Frame.__init__(self, parent)
 
@@ -168,7 +170,7 @@ class _ResetPage(_tk.Frame):
 
 
 class _RunPage(_tk.Frame):
-    def __init__(self, parent: _tk.Frame, controller: _tk.Tk):
+    def __init__(self, parent: _tk.Frame, controller: IHSRunner):
         _tk.Frame.__init__(self, parent)
 
         self._controller = controller
@@ -261,15 +263,16 @@ class _RunPage(_tk.Frame):
         )
         start_button.grid(row=4, column=3, padx=10, pady=10)
 
+        def skip() -> None:
+            controller._stop_updating_sensor_values()
+            self.master.quit() 
+
         skip_button = _ttk.Button(
             self,
             text="Skip Light",
             style="Small.TButton",
             padding=_PADDING20,
-            command=lambda: (
-                controller._stop_updating_sensor_values(),
-                self.master.quit(),
-            ),
+            command= skip
         )
         skip_button.grid(row=5, column=0, padx=10, pady=10)
 
