@@ -1,23 +1,31 @@
 from abc import ABC as _ABC, abstractmethod as _abstractmethod
 import time as _time
 from .sensor import Sensor as _Sensor
-from typing import Callable as _Callable, TypeVar as _TypeVar, Generic as _Generic, Tuple as _Tuple, List as _List
+from typing import Callable as _Callable, Tuple as _Tuple, List as _List
 from .camera import Camera as _Camera
-from .create import Create as _Create
+from .create import Create as _Create, CreateSensor as _CreateSensor
 
-_T = _TypeVar("_T")
+from typing import TypeVar as _TypeVar, Generic as _Generic, Protocol as _Protocol
 
 class Controller(_ABC):
     """Abstract class for controllers.
     """
     @_abstractmethod
-    def get_status(self):
+    def get_status(self) -> bool:
         pass
     
-class ValueController(Controller, _Generic[_T]):
+# boilerplate
+class _Comparable(_Protocol):
+    def __lt__(self: "_T", other: "_T") -> bool:
+        ...
+_T = _TypeVar("_T", bound=_Comparable)
+
+class ValueController(_ABC, _Generic[_T]):
     """Derived abstract class for value controllers including LessThan, GreaterThan, IsFalse, and IsTrue.
     """
-    pass
+    @_abstractmethod
+    def get_status(self, current_value: _T) -> bool:
+        pass
     
 class LessThan(ValueController):
     """Controller for whether the current value is less than a specified value.
@@ -142,7 +150,7 @@ class SensorController(Controller):
         sensor_threshold (ValueController): A `ValueController` object to check the sensor value.
     """
     def __init__(self, sensor: _Sensor, sensor_threshold: ValueController) -> None:
-        super().__init()
+        super().__init__()
         self.sensor = sensor
         self.sensor_threshold = sensor_threshold
 
@@ -159,15 +167,15 @@ class CreateSensorController(Controller):
 
     Args:
         create (Create): An instance of the `Create` object.
-        sensor (int): The specific Create sensor to use, specified using the `CreateSensor` enum.
+        sensor (CreateSensor): The specific Create sensor to use, specified using the `CreateSensor` enum.
         sensor_threshold (ValueController): A `ValueController` object to check the sensor value.
         
     Attributes:
         create (Create): An instance of the `Create` object.
-        sensor (int): The specific Create sensor to use, specified using the `CreateSensor` enum.
+        sensor (CreateSensor): The specific Create sensor to use, specified using the `CreateSensor` enum.
         sensor_threshold (ValueController): A `ValueController` object to check the sensor value.
     """
-    def __init__(self, create: _Create, sensor: int, sensor_threshold: ValueController) -> None:
+    def __init__(self, create: _Create, sensor: _CreateSensor, sensor_threshold: ValueController) -> None:
         super().__init__()
         self.create = create
         self.sensor = sensor
@@ -201,7 +209,7 @@ class CameraHoughLinesController(Controller):
         is_outlier (Callable[[float], bool]): A function or lambda that takes in a hough line distance and returns whether it is a valid distance. This is used to eliminate passing values that are obviously unrealistic.
         use_vertical_distance (bool, optional): Whether to use the vertical distance (usually for horizon) or horizontal distance (usually for relative angle). Defaults to True (vertical distance).
         kwargs (dict[str, int | float]): Used to override default camera parameters defined in `CameraParameters`.
-        prev_distance (list[float]): A list of previous returned hough line distances. The five most recent values all must reach the designated target for validity and reliability.
+        prev_distance (List[float]): A list of previous returned hough line distances. The five most recent values all must reach the designated target for validity and reliability.
     """
     def __init__(self, camera: _Camera, 
         hough_lines_optimization_method: _Callable[
@@ -220,7 +228,7 @@ class CameraHoughLinesController(Controller):
         self.is_outlier = is_outlier
         self.use_vertical_distance = use_vertical_distance
         self.kwargs = kwargs
-        self.prev_distance = []
+        self.prev_distance: _List[float] = []
 
     def get_status(self) -> bool:
         x_distance, y_distance, _, _, slope = self.camera.get_live_hough_line_distance(self.hough_lines_optimization_method, **self.kwargs)
