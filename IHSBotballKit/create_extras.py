@@ -4,7 +4,7 @@ This module is not a top level import to prevent name confusion with other Creat
 
 from .create import Create as _Create
 from .sensor import Sensor as _Sensor
-from .controller import CreateSensorController as _CreateSensorController, LessThan as _LessThan, GreaterThan as _GreaterThan, SensorController as _SensorController, IsFalse as _IsFalse, IsTrue as _IsTrue
+from .controller import CreateSensorController as _CreateSensorController, LessThan as _LessThan, GreaterThan as _GreaterThan, SensorController as _SensorController, ValueController as _ValueController
 from typing import Callable as _Callable
 
 def align_to_line(create: _Create, left_speed: int, right_speed: int, left_sensor: int, right_sensor: int, threshold: int) -> None:
@@ -45,7 +45,7 @@ def align_to_line_white(create: _Create, left_speed: int, right_speed: int, left
         create.drive_until(0, right_speed, lambda: right_on_black.get_status())
     create.stop()
     
-def drive_until_create_sensor(create: _Create, left_speed: int, right_speed: int, sensor: int, threshold: _LessThan | _GreaterThan) -> None:
+def drive_until_create_sensor(create: _Create, left_speed: int, right_speed: int, sensor: int, threshold: _ValueController) -> None:
     """Drive the Create until a specified value is reached on a certain Create sensor.
 
     Args:
@@ -53,12 +53,12 @@ def drive_until_create_sensor(create: _Create, left_speed: int, right_speed: int
         left_speed (int): Speed of the left wheel, -500 to 500.
         right_speed (int): Speed of the right wheel, -500 to 500.
         sensor (int): Create sensor specified using the `CreateSensor` enum.
-        threshold (LessThan | GreaterThan): A LessThan or GreaterThan object to compare a target sensor value.
+        threshold (ValueController): A `ValueController` object to check the sensor value.
     """
     sensor_controller = _CreateSensorController(create, sensor, threshold)
     create.drive_until(left_speed, right_speed, lambda: sensor_controller.get_status())
     
-def drive_until_sensor(create: _Create, left_speed: int, right_speed: int, sensor: _Sensor, threshold: _LessThan | _GreaterThan | _IsFalse | _IsTrue) -> None:
+def drive_until_sensor(create: _Create, left_speed: int, right_speed: int, sensor: _Sensor, threshold: _ValueController) -> None:
     """Drive the Create until a specified value is reached on a certain analog or digital sensor.
 
     Args:
@@ -66,7 +66,7 @@ def drive_until_sensor(create: _Create, left_speed: int, right_speed: int, senso
         left_speed (int): Speed of the left wheel, -500 to 500.
         right_speed (int): Speed of the right wheel, -500 to 500.
         sensor (Sensor): The Sensor object that represents the robot sensor.
-        threshold (LessThan | GreaterThan | IsFalse | IsTrue): A LessThan or GreaterThan or IsFalse or IsTrue object to compare a target sensor value.
+        threshold (ValueController): A `ValueController` object to check the sensor value.
     """
     sensor_controller = _SensorController(sensor, threshold)
     create.drive_until(left_speed, right_speed, lambda: sensor_controller.get_status())
