@@ -18,7 +18,7 @@ while hough_lines_controller.get_status():
 
 # example application of color bounding box: driving up to a blue cube using its relative position
 # create the hsv color profile of the cube
-blue = ColorRange([95, 45, 0], [130, 255, 160])
+blue = ColorRange((95, 45, 0), (130, 255, 160))
 x_c, y_c, width, height = camera.get_live_color_bounding_box_center(blue)
 while width * height < 200:
     x_c, y_c, width, height = camera.get_live_color_bounding_box_center(blue)
