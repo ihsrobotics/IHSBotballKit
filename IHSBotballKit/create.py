@@ -182,11 +182,14 @@ class Create:
         """
         return self.k.get_create_rbump()
 
-    def get_sensor(self, sensor: int) -> int:
+    def get_sensor(self, sensor: CreateSensor) -> int:
         """Get the value of the specified Create sensor.
 
         Args:
-            sensor (int): Create sensor specified using the `CreateSensor` enum.
+            sensor (CreateSensor): Create sensor specified using the `CreateSensor` enum.
+
+        Raises:
+            ValueError: Invalid Create sensor type provided.
 
         Returns:
             int: Value of the specified Create sensor.
@@ -218,6 +221,9 @@ class Create:
             return self.get_left_bump()
         elif sensor == CreateSensor.RIGHT_BUMP:
             return self.get_right_bump()
+        
+        else:
+            raise ValueError("Invalid Create sensor.")
 
     def disconnect(self) -> None:
         """Disconnect from the Create.
