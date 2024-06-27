@@ -1,5 +1,0 @@
-import IHSBotballKit
-
-print(IHSBotballKit.__version__)
-IHSBotballKit.motors_extras
-IHSBotballKit

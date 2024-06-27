@@ -10,10 +10,17 @@ print(configs["ARM_SERVO"]) # 0
 print(configs["CLAW_OPEN"]) # 500
 
 
-# or (not really recommended), expose the values to the global namespace
+# or (not really recommended), expose the variables to the global namespace
 inject_namespace(globals(), configs)
 
 # pylance will yell at you but if everything else is right then this does actually work
 print(CLAW_CLOSED) # 0
-print(CREATE_TOPHAT_BLACK) # 2000
-# to use these values in other files just do `from configs import *`
+print(CREATE_BLACK) # 2000
+# to use these variables in other files just do `from configs import *`
+
+# more time consuming but pylance or other type checkers won't yell at you:
+LEFT_MOTOR = configs["LEFT_MOTOR"]
+RIGHT_MOTOR = configs["RIGHT_MOTOR"]
+
+print(LEFT_MOTOR) # 2
+print(RIGHT_MOTOR) # 3

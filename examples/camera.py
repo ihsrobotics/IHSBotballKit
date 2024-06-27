@@ -1,4 +1,4 @@
-from IHSBotballKit import Camera, CameraHoughLinesController, ColorRange
+from IHSBotballKit import Camera, CameraHoughLinesController, ColorRange, HoughLinesOptimization
 
 camera = Camera(0, camera_crop_bottom = 200, canny_thresh1 = 100, canny_thresh2 = 250)
 
@@ -10,7 +10,7 @@ is_target_reached = lambda distance: distance > 200
 is_slope_valid = lambda slope: slope < 1
 # for example, anything beyond 270 would be unreasonable and came from something else because by the time the value reaches 240 the robot would have already crashed into the pipe
 is_outlier = lambda distance: distance > 270
-hough_lines_controller = CameraHoughLinesController(camera, is_target_reached, is_slope_valid, is_outlier, True, canny_thresh1 = 150)
+hough_lines_controller = CameraHoughLinesController(camera, HoughLinesOptimization.sort_by_vertical, is_target_reached, is_slope_valid, is_outlier, True, canny_thresh1 = 150)
 
 while hough_lines_controller.get_status():
     # perform actions while the controller's target has not been reached
@@ -27,3 +27,5 @@ while width * height < 200:
         pass
     else:
         pass
+
+camera.close()
