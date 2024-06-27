@@ -81,16 +81,17 @@ class Create:
         """
         self.k.create_drive_direct(0, 0)
 
-    def drive_until(self, left_speed: int, right_speed: int, continuing_condition: _Callable[..., bool]) -> None:
-        """Drive the Create synchronously while a condition is true.
+    def drive_until(self, left_speed: int, right_speed: int, continuing_condition: _Callable[..., bool], continuing_condition_args: tuple = ()) -> None:
+        """Drive the Create synchronously while a condition is true, and then stops.
 
         Args:
             left_speed (int): Speed of the left wheel, -500 to 500.
             right_speed (int): Speed of the right wheel, -500 to 500.
             continuing_condition (_Callable[..., _Any]): A function or lambda that returns a truthy value until the Create is supposed to stop. 
+            continuing_condition_args (Optional[tuple], optional): Argument(s) for the continuing_condition function as an ordered tuple. Defaults to ()).
         """
         self.k.create_drive_direct(left_speed, right_speed)
-        while(continuing_condition()): 
+        while(continuing_condition(*continuing_condition_args)): 
             continue
         self.k.create_drive_direct(0, 0)
 
