@@ -1,5 +1,6 @@
 from __future__ import annotations as _annotation
 import threading as _threading
+from typing import Callable as _Callable
 
 class Motor:
     """Motor object with core functionalities.
@@ -43,6 +44,19 @@ class Motor:
         Args:
             velocity (int): Velocity of the motor, -1500 to 1500.
         """
+        self.k.mav(self.port, velocity)
+        
+    def move_until(self, velocity: int, continuing_condition: _Callable[..., bool], continuing_condition_args: tuple = ()) -> None:
+        """Move the motor synchronously while a condition is true, and then stops.
+
+        Args:
+            velocity (int): Velocity of the motor, -1500 to 1500.
+            continuing_condition (_Callable[..., bool]): A function or lambda that returns a truthy value until the motor is supposed to stop.
+            continuing_condition_args (Optional[tuple], optional): Argument(s) for the continuing_condition function as an ordered tuple. Defaults to ()). 
+        """
+        self.k.mav(self.port, velocity)
+        while(continuing_condition(*continuing_condition_args)):
+            continue
         self.k.mav(self.port, velocity)
 
     def get_position_counter(self) -> int:
