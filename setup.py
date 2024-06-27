@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
   name = 'IHSBotballKit',
   packages = ['IHSBotballKit'],
-  version = '1.0.0',
+  version = '1.0.1',
   license='GPL-3.0',
   description = 'An object-oriented wrapper for the KIPR Botball library with additional functionalities.',
   long_description_content_type="text/markdown",
@@ -14,7 +14,7 @@ setup(
   author = 'snow4060',
   author_email = 'haoyun807963@gmail.com',
   url = 'https://github.com/snow4060',
-  download_url = 'https://github.com/ihsrobotics/IHSBotballKit/archive/refs/tags/1.0.0.tar.gz',
+  download_url = 'https://github.com/ihsrobotics/IHSBotballKit/archive/refs/tags/1.0.1.tar.gz',
   keywords = ['KIPR', 'BOTBALL', 'WOMBAT', 'LIBKIPR', 'LIBWALLABY'],
   install_requires=[
           'numpy',

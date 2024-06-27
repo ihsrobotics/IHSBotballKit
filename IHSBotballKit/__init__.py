@@ -11,4 +11,4 @@ from IHSBotballKit.camera import *
 from IHSBotballKit import create_extras
 from IHSBotballKit import motors_extras
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
