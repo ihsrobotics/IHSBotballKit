@@ -99,7 +99,7 @@ def line_follow_right_once(create: _Create, slow_speed: int, fast_speed: int, se
     else:
         create.drive(fast_speed, slow_speed)
         
-def line_follow_left_using_create_sensor_until(create: _Create, slow_speed: int, fast_speed: int, sensor: int, threshold: int, continuing_condition: _Callable[..., bool]) -> None:
+def line_follow_left_using_create_sensor_until(create: _Create, slow_speed: int, fast_speed: int, sensor: int, threshold: int, continuing_condition: _Callable[..., bool], continuing_condition_args: tuple = ()) -> None:
     """Line follow on the left side of the tape using a specified Create sensor while a condition is true.
 
     Args:
@@ -109,13 +109,14 @@ def line_follow_left_using_create_sensor_until(create: _Create, slow_speed: int,
         sensor (int): The specific Create sensor to use, specified using the `CreateSensor` enum.
         threshold (int): Threshold between white and tape color.
         continuing_condition (_Callable[..., bool]): A function or lambda that returns a truthy value until the line follow is supposed to stop.
+        continuing_condition_args (Optional[tuple], optional): Argument(s) for the continuing_condition function as an ordered tuple. Defaults to ()).
     """
     sensor_on_black_controller = _CreateSensorController(create, sensor, _GreaterThan(threshold))
-    while continuing_condition():
+    while continuing_condition(*continuing_condition_args):
         line_follow_left_once(create, slow_speed, fast_speed, sensor_on_black_controller)
     create.stop()
     
-def line_follow_left_using_sensor_until(create: _Create, slow_speed: int, fast_speed: int, sensor: _Sensor, threshold: int, continuing_condition: _Callable[..., bool]) -> None:
+def line_follow_left_using_sensor_until(create: _Create, slow_speed: int, fast_speed: int, sensor: _Sensor, threshold: int, continuing_condition: _Callable[..., bool], continuing_condition_args: tuple = ()) -> None:
     """Line follow on the left side of the tape using a specified Create sensor while a condition is true.
 
     Args:
@@ -125,13 +126,14 @@ def line_follow_left_using_sensor_until(create: _Create, slow_speed: int, fast_s
         sensor (Sensor): The Sensor object that represents the robot sensor used for line follow.
         threshold (int): Threshold between white and tape color.
         continuing_condition (_Callable[..., bool]): A function or lambda that returns a truthy value until the line follow is supposed to stop.
+        continuing_condition_args (Optional[tuple], optional): Argument(s) for the continuing_condition function as an ordered tuple. Defaults to ()).
     """
     sensor_on_black_controller = _SensorController(sensor, _LessThan(threshold))
-    while continuing_condition():
+    while continuing_condition(*continuing_condition_args):
         line_follow_left_once(create, slow_speed, fast_speed, sensor_on_black_controller)
     create.stop()
         
-def line_follow_right_using_create_sensor_until(create: _Create, slow_speed: int, fast_speed: int, sensor: int, threshold: int, continuing_condition: _Callable[..., bool]) -> None:
+def line_follow_right_using_create_sensor_until(create: _Create, slow_speed: int, fast_speed: int, sensor: int, threshold: int, continuing_condition: _Callable[..., bool], continuing_condition_args: tuple = ()) -> None:
     """Line follow on the right side of the tape using a specified Create sensor while a condition is true.
 
     Args:
@@ -141,13 +143,14 @@ def line_follow_right_using_create_sensor_until(create: _Create, slow_speed: int
         sensor (int): The specific Create sensor to use, specified using the `CreateSensor` enum.
         threshold (int): Threshold between white and tape color.
         continuing_condition (_Callable[..., bool]): A function or lambda that returns a truthy value until the line follow is supposed to stop.
+        continuing_condition_args (Optional[tuple], optional): Argument(s) for the continuing_condition function as an ordered tuple. Defaults to ()).
     """
     sensor_on_black_controller = _CreateSensorController(create, sensor, _GreaterThan(threshold))
-    while continuing_condition():
+    while continuing_condition(*continuing_condition_args):
         line_follow_right_once(create, slow_speed, fast_speed, sensor_on_black_controller)
     create.stop()
     
-def line_follow_right_using_sensor_until(create: _Create, slow_speed: int, fast_speed: int, sensor: _Sensor, threshold: int, continuing_condition: _Callable[..., bool]) -> None:
+def line_follow_right_using_sensor_until(create: _Create, slow_speed: int, fast_speed: int, sensor: _Sensor, threshold: int, continuing_condition: _Callable[..., bool], continuing_condition_args: tuple = ()) -> None:
     """Line follow on the right side of the tape using a specified Create sensor while a condition is true.
 
     Args:
@@ -157,8 +160,9 @@ def line_follow_right_using_sensor_until(create: _Create, slow_speed: int, fast_
         sensor (Sensor): The Sensor object that represents the robot sensor used for line follow.
         threshold (int): Threshold between white and tape color.
         continuing_condition (_Callable[..., bool]): A function or lambda that returns a truthy value until the line follow is supposed to stop.
+        continuing_condition_args (Optional[tuple], optional): Argument(s) for the continuing_condition function as an ordered tuple. Defaults to ()).
     """
     sensor_on_black_controller = _SensorController(sensor, _LessThan(threshold))
-    while continuing_condition():
+    while continuing_condition(*continuing_condition_args):
         line_follow_right_once(create, slow_speed, fast_speed, sensor_on_black_controller)
     create.stop()    
