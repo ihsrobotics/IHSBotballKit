@@ -1,4 +1,5 @@
 from __future__ import annotations as _annotation
+import threading as _threading
 
 class Servo:
     """Servo object with core functionalities.
@@ -76,5 +77,14 @@ class Servo:
             self.k.msleep(delay)
         self.k.set_servo_position(self.port, target_position)
         self.k.msleep(50)
+        
+    def set_position_async(self, target_position: int, delay: int = 0) -> None:
+        """Asynchronously set the position of the servo immediately or slowly.
+
+        Args:
+            target_position (int): Position to get the servo to.
+            delay (int, optional): 0 - set the position of the servo immediately; other positive integer = set the position of the servo slowly. The higher the delay the slower its movement. Defaults to 0.
+        """
+        _threading.Thread(target=self.set_position, args=(target_position, delay)).start()
   
 from .bot import BotController as _BotController
