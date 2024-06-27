@@ -1,22 +1,30 @@
 import cv2 as _cv2
 import numpy as _np
 from uuid import uuid4 as _uuid4
-from typing import Callable as _Callable, TypedDict as _TypedDict, Tuple as _Tuple, List as _List
+from typing import (
+    Callable as _Callable,
+    Sequence as _Sequence,
+    TypedDict as _TypedDict,
+    Tuple as _Tuple,
+    List as _List,
+)
 
 
 class ColorRange:
     """A color range in the hsv color space.
 
     Args:
-        lower (List[int, int, int]): Lower bound of the hsv color range.
-        upper (List[int, int, int]): Upper bound of the hsv color range.
+        lower (Tuple[int, int, int]): Lower bound of the hsv color range.
+        upper (Tuple[int, int, int]): Upper bound of the hsv color range.
 
     Attributes:
         lower (np.ndarray): Lower bound of the hsv color range.
         upper (np.ndarray): Upper bound of the hsv color range.
     """
 
-    def __init__(self, lower: _List[int, int, int], upper: _List[int, int, int]) -> None:
+    def __init__(
+        self, lower: _Tuple[int, int, int], upper: _Tuple[int, int, int]
+    ) -> None:
         self.lower: _np.ndarray = _np.array(lower, dtype="uint8")
         self.upper: _np.ndarray = _np.array(upper, dtype="uint8")
 
@@ -91,10 +99,10 @@ class Camera:
             "camera_crop_left": 0,
             "camera_crop_right": 0,
         }
-
-        for key, value in kwargs:
+        
+        for key, value in kwargs.items():
             if key in self.default_parameters:
-                self.default_parameters[key] = value
+                self.default_parameters[key] = value # type: ignore # mypy expects key to be a string literal; items method cannot return string literals, and the conditional already guarantees that the key is valid.
             else:
                 print(f"{key} is not a valid camera parameter")
 
@@ -122,7 +130,7 @@ class Camera:
         """
         lab = _cv2.cvtColor(image, _cv2.COLOR_BGR2LAB)
         l, a, b = _cv2.split(lab)
-        l_norm = _cv2.normalize(l, None, 0, 255, _cv2.NORM_MINMAX)
+        l_norm = _cv2.normalize(l, l, 0, 255, _cv2.NORM_MINMAX) # typing: ignore 
         lab = _cv2.merge([l_norm, a, b])
         normalized_image = _cv2.cvtColor(lab, _cv2.COLOR_LAB2BGR)
         return normalized_image
@@ -249,7 +257,7 @@ class Camera:
             image (cv2.typing.MatLike): Image to perform the operation on.
             optimization_method (Callable[ [List[Tuple[float, float, float, float, float]], int, int], List[Tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
             **kwargs: Used to override default camera parameters defined in `CameraParameters`.
-            
+
         Returns:
             cv2.typing.MatLike: Image with hough lines drawn on it.
         """
@@ -390,7 +398,7 @@ class Camera:
         color_range: ColorRange,
         kernel_size: int = 5,
         iterations: int = 2,
-    ) -> _List[_Tuple[int, int, int, int]]:
+    ) -> list[_Sequence[int]]:
         """Get bounding boxes of certain hsv color blobs in an image.
 
         Args:
@@ -445,23 +453,24 @@ class Camera:
             frame, color_range, kernel_size, iterations
         )
         if len(bounding_boxes) == 0:
-            return (-1, -1)
+            return (-1, -1, -1, -1)
         return (
             bounding_boxes[0][0] + bounding_boxes[0][2] / 2,
             bounding_boxes[0][1] + bounding_boxes[0][3] / 2,
             bounding_boxes[0][2],
-            bounding_boxes[0][3]
+            bounding_boxes[0][3],
         )
 
     def close(self) -> None:
-        """Stops the camera feed, frees the video index, and destroys all OpenCV windows.
-        """
+        """Stops the camera feed, frees the video index, and destroys all OpenCV windows."""
         self.video.release()
         _cv2.destroyAllWindows()
 
+
 class HoughLinesOptimization:
-    """A collection of basic hough line optimization/sorting methods
-    """
+    """A collection of basic hough line optimization/sorting methods"""
+
+    @staticmethod
     def sort_by_horizontal(
         hough_lines: _List[_Tuple[float, float, float, float, float]],
         slope_exponent: int,
@@ -484,6 +493,7 @@ class HoughLinesOptimization:
             ),
         )
 
+    @staticmethod
     def sort_by_vertical(
         hough_lines: _List[tuple[float, float, float, float, float]],
         slope_exponent: int,
