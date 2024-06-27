@@ -78,11 +78,11 @@ class BotController:
         """
         return _Motor(self, port)
 
-    def create_sensor(self, sensor_type: int, port: int) -> _Sensor:
+    def create_sensor(self, sensor_type: _SensorType, port: int) -> _Sensor:
         """A wrapper for the Sensor class.
 
         Args:
-            sensor_type (int): Type of the sensor (ANALOG or DIGITAL) using the `SensorType` enum from the sensor module.
+            sensor_type (SensorType): Type of the sensor (ANALOG or DIGITAL) using the `SensorType` enum from the sensor module.
             port (int): Port of the sensor.
 
         Returns:
