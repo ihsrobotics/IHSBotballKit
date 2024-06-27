@@ -95,3 +95,31 @@ def create_motors_drive_function(bot: _BotController, motor1: _Motor, motor2: _M
         motor1.move(motor1_velocity)
         motor2.move(motor2_velocity)
     return drive
+
+def create_motors_drive_until_function(bot: _BotController, motor1: _Motor, motor2: _Motor) -> _Callable[[int, int, _Callable[..., bool], tuple], None]:
+    """Create a function to move the two motors synchronously while a condition is true, and then stops.
+
+    Args:
+        bot (_BotController): An instance of the `BotController` object.
+        motor1 (_Motor): `Motor` object of the first motor.
+        motor2 (_Motor): `Motor` object of the second motor.
+
+    Returns:
+        _Callable[[int, int, _Callable[..., bool], tuple], None]: _description_
+    """
+    def drive_until(motor1_velocity: int, motor2_velocity: int, continuing_condition: _Callable[..., bool], continuing_condition_args: tuple = ()) -> None:
+        """Move the motors synchronously while a condition is true, and then stops.
+
+        Args:
+            motor1_velocity (int): Velocity of motor1, -1500 to 1500.
+            motor2_velocity (int): Velocity of motor2, -1500 to 1500.
+            continuing_condition (Callable[..., bool]): A function or lambda that returns a truthy value until the motors are supposed to stop.
+            continuing_condition_args (Optional[tuple], optional): Argument(s) for the continuing_condition function as an ordered tuple. Defaults to ()).
+        """
+        motor1.move(motor1_velocity)
+        motor2.move(motor2_velocity)
+        while continuing_condition(*continuing_condition_args):
+            continue
+        motor1.stop()
+        motor2.stop()
+    return drive_until
