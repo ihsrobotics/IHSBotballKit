@@ -1,22 +1,22 @@
 import cv2 as _cv2
 import numpy as _np
 from uuid import uuid4 as _uuid4
-from typing import Callable as _Callable, TypedDict as _TypedDict
+from typing import Callable as _Callable, TypedDict as _TypedDict, Tuple as _Tuple, List as _List
 
 
 class ColorRange:
     """A color range in the hsv color space.
 
     Args:
-        lower (list[int, int, int]): Lower bound of the hsv color range.
-        upper (list[int, int, int]): Upper bound of the hsv color range.
+        lower (List[int, int, int]): Lower bound of the hsv color range.
+        upper (List[int, int, int]): Upper bound of the hsv color range.
 
     Attributes:
         lower (np.ndarray): Lower bound of the hsv color range.
         upper (np.ndarray): Upper bound of the hsv color range.
     """
 
-    def __init__(self, lower: list[int, int, int], upper: list[int, int, int]) -> None:
+    def __init__(self, lower: _List[int, int, int], upper: _List[int, int, int]) -> None:
         self.lower: _np.ndarray = _np.array(lower, dtype="uint8")
         self.upper: _np.ndarray = _np.array(upper, dtype="uint8")
 
@@ -107,7 +107,7 @@ class Camera:
         """Get the current frame of the camera.
 
         Returns:
-            tuple[bool, cv2.typing.MatLike]: (whether a frame was retrieved, frame retrieved).
+            Tuple[bool, cv2.typing.MatLike]: (whether a frame was retrieved, frame retrieved).
         """
         return self.video.read()
 
@@ -172,20 +172,20 @@ class Camera:
         self,
         image: _cv2.typing.MatLike,
         optimization_method: _Callable[
-            [list[tuple[float, float, float, float, float]], int, int],
-            list[tuple[float, float, float, float, float]],
+            [_List[_Tuple[float, float, float, float, float]], int, int],
+            _List[_Tuple[float, float, float, float, float]],
         ],
         **kwargs,
-    ) -> list[tuple[float, float, float, float, float]]:
+    ) -> _List[_Tuple[float, float, float, float, float]]:
         """Performs the hough line transform on an image.
 
         Args:
             image (cv2.typing.MatLike): Image to perform the transformation on.
-            optimization_method (Callable[ [list[tuple[float, float, float, float, float]], int, int], list[tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
+            optimization_method (Callable[ [List[Tuple[float, float, float, float, float]], int, int], List[Tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
             **kwargs: Used to override default camera parameters defined in `CameraParameters`.
 
         Returns:
-            list[tuple[float, float, float, float, float]]: List of tuples representing hough lines. (x0, y0, cos(theta), sin(theta), slope).
+            List[Tuple[float, float, float, float, float]]: List of tuples representing hough lines. (x0, y0, cos(theta), sin(theta), slope).
         """
         camera_parameters = self.override_default_parameters(**kwargs)
 
@@ -238,8 +238,8 @@ class Camera:
         self,
         image: _cv2.typing.MatLike,
         optimization_method: _Callable[
-            [list[tuple[float, float, float, float, float]], int, int],
-            list[tuple[float, float, float, float, float]],
+            [_List[_Tuple[float, float, float, float, float]], int, int],
+            _List[_Tuple[float, float, float, float, float]],
         ],
         **kwargs,
     ) -> _cv2.typing.MatLike:
@@ -247,7 +247,7 @@ class Camera:
 
         Args:
             image (cv2.typing.MatLike): Image to perform the operation on.
-            optimization_method (Callable[ [list[tuple[float, float, float, float, float]], int, int], list[tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
+            optimization_method (Callable[ [List[Tuple[float, float, float, float, float]], int, int], List[Tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
             **kwargs: Used to override default camera parameters defined in `CameraParameters`.
             
         Returns:
@@ -307,8 +307,8 @@ class Camera:
     def display_live_hough_lines(
         self,
         optimization_method: _Callable[
-            [list[tuple[float, float, float, float, float]], int, int],
-            list[tuple[float, float, float, float, float]],
+            [_List[_Tuple[float, float, float, float, float]], int, int],
+            _List[_Tuple[float, float, float, float, float]],
         ],
         flipped=False,
         **kwargs,
@@ -316,7 +316,7 @@ class Camera:
         """Performs the hough line transform on the live camera feed and displays it on the screen. Press 'q' on the keyboard to stop the function, and 's' to save a copy of the clean frame.
 
         Args:
-            optimization_method (Callable[ [list[tuple[float, float, float, float, float]], int, int], list[tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
+            optimization_method (Callable[ [List[Tuple[float, float, float, float, float]], int, int], List[Tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
             flipped (bool, optional): Whether to flip the image upside down when displayed. Defaults to False.
             **kwargs: Used to override default camera parameters defined in `CameraParameters`.
 
@@ -353,22 +353,22 @@ class Camera:
     def get_live_hough_line_distance(
         self,
         optimization_method: _Callable[
-            [list[tuple[float, float, float, float, float]], int, int],
-            list[tuple[float, float, float, float, float]],
+            [_List[_Tuple[float, float, float, float, float]], int, int],
+            _List[_Tuple[float, float, float, float, float]],
         ],
         **kwargs,
-    ) -> tuple[float, float, float, float, float]:
+    ) -> _Tuple[float, float, float, float, float]:
         """Performs the hough line transform on the current camera frame and returns the optimal line.
 
         Args:
-            optimization_method (Callable[ [list[tuple[float, float, float, float, float]], int, int], list[tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
+            optimization_method (Callable[ [List[Tuple[float, float, float, float, float]], int, int], List[Tuple[float, float, float, float, float]], ]): A method that takes in a list of hough lines, the slope exponent, and the distance coefficient; and sorts them.
             **kwargs: Used to override default camera parameters defined in `CameraParameters`.
 
         Raises:
             Exception: Cannot get frame.
 
         Returns:
-            tuple[float, float, float, float, float]: The optimal line provided by the `optimization_method`. (x0, y0, cos(theta), sin(theta), slope).
+            Tuple[float, float, float, float, float]: The optimal line provided by the `optimization_method`. (x0, y0, cos(theta), sin(theta), slope).
         """
         ret, frame = self.video.read()
         if not ret:
@@ -390,7 +390,7 @@ class Camera:
         color_range: ColorRange,
         kernel_size: int = 5,
         iterations: int = 2,
-    ) -> list[tuple[int, int, int, int]]:
+    ) -> _List[_Tuple[int, int, int, int]]:
         """Get bounding boxes of certain hsv color blobs in an image.
 
         Args:
@@ -400,7 +400,7 @@ class Camera:
             iterations (int): Iterations of `cv2.erode` and `cv2.dilute` applied when denoising the masked image. Defaults to 2.
 
         Returns:
-            list[tuple[int, int, int, int]]: List of `cv2.typing.Rect` object consisting of the four vertices, sorted from largest to smallest.
+            List[Tuple[int, int, int, int]]: List of `cv2.typing.Rect` object consisting of the four vertices, sorted from largest to smallest.
         """
 
         kernel = _np.ones((kernel_size), _np.uint8)
@@ -424,7 +424,7 @@ class Camera:
         color_range: ColorRange,
         kernel_size: int = 5,
         iterations: int = 2,
-    ) -> tuple[float, float, float, float]:
+    ) -> _Tuple[float, float, float, float]:
         """Get the center point and size of largest hsv blob bounding box in the current frame.
 
         Args:
@@ -436,7 +436,7 @@ class Camera:
             Exception: Cannot get frame.
 
         Returns:
-            tuple[float, float]: Center point of the largest bounding rect as well as its width and height. (x_c, y_c, w, h).
+            Tuple[float, float, float, float]: Center point of the largest bounding rect as well as its width and height. (x_c, y_c, w, h).
         """
         ret, frame = self.video.read()
         if not ret:
@@ -459,49 +459,49 @@ class Camera:
         self.video.release()
         _cv2.destroyAllWindows()
 
-    class HoughLinesOptimization:
-        """A collection of basic hough line optimization/sorting methods
+class HoughLinesOptimization:
+    """A collection of basic hough line optimization/sorting methods
+    """
+    def sort_by_horizontal(
+        hough_lines: _List[_Tuple[float, float, float, float, float]],
+        slope_exponent: int,
+        distance_coefficient: int,
+    ) -> _List[_Tuple[float, float, float, float, float]]:
+        """Sorts the hough lines from most horizontal to least horizontal, while taking into account the vertical position (y0) of the line's center point.
+
+        Args:
+            hough_lines (List[Tuple[float, float, float, float, float]]): A list of hough line tuple to be sorted.
+            slope_exponent (int): Exponent of the slope term in choosing the best hough line. Increased value increases the weight of how horizontal a line is.
+            distance_coefficient (int): Coefficient of y0 value of a line in choosing the best hough line. Increased positive/negative value increases the weight of the vertical position of the line.
+
+        Returns:
+            List[Tuple[float, float, float, float, float]]: Sorted list of hough line tuple. (x0, y0, cos(theta), sin(theta), slope).
         """
-        def sort_by_horizontal(
-            hough_lines: list[tuple[float, float, float, float, float]],
-            slope_exponent: int,
-            distance_coefficient: int,
-        ) -> list[tuple[float, float, float, float, float]]:
-            """Sorts the hough lines from most horizontal to least horizontal, while taking into account the vertical position (y0) of the line's center point.
+        return sorted(
+            hough_lines,
+            key=lambda line: (
+                (2 * abs(line[4]) + 1) ** slope_exponent - distance_coefficient
+            ),
+        )
 
-            Args:
-                hough_lines (list[tuple[float, float, float, float, float]]): A list of hough line tuples to be sorted.
-                slope_exponent (int): Exponent of the slope term in choosing the best hough line. Increased value increases the weight of how horizontal a line is.
-                distance_coefficient (int): Coefficient of y0 value of a line in choosing the best hough line. Increased positive/negative value increases the weight of the vertical position of the line.
+    def sort_by_vertical(
+        hough_lines: _List[tuple[float, float, float, float, float]],
+        slope_exponent: int,
+        distance_coefficient: int,
+    ) -> _List[_Tuple[float, float, float, float, float]]:
+        """Sorts the hough lines from most vertical to least vertical, while taking into account the horizontal position (x0) of the line's center point.
 
-            Returns:
-                list[tuple[float, float, float, float, float]]: Sorted list of hough line tuples. (x0, y0, cos(theta), sin(theta), slope).
-            """
-            return sorted(
-                hough_lines,
-                key=lambda line: (
-                    (2 * abs(line[4]) + 1) ** slope_exponent - distance_coefficient
-                ),
-            )
+        Args:
+            hough_lines (List[Tuple[float, float, float, float, float]]): A list of hough line tuple to be sorted.
+            slope_exponent (int): Exponent of the slope term in choosing the best hough line. Increased value increases the weight of how vertical a line is.
+            distance_coefficient (int): Coefficient of the x0 value of a line in choosing the best hough line. Increased positive/negative value increases the weight of the horizontal position of the line.
 
-        def sort_by_vertical(
-            hough_lines: list[tuple[float, float, float, float, float]],
-            slope_exponent: int,
-            distance_coefficient: int,
-        ) -> list[tuple[float, float, float, float, float]]:
-            """Sorts the hough lines from most vertical to least vertical, while taking into account the horizontal position (x0) of the line's center point.
-
-            Args:
-                hough_lines (list[tuple[float, float, float, float, float]]): A list of hough line tuples to be sorted.
-                slope_exponent (int): Exponent of the slope term in choosing the best hough line. Increased value increases the weight of how vertical a line is.
-                distance_coefficient (int): Coefficient of the x0 value of a line in choosing the best hough line. Increased positive/negative value increases the weight of the horizontal position of the line.
-
-            Returns:
-                list[tuple[float, float, float, float, float]]: Sorted list of hough line tuples. (x0, y0, cos(theta), sin(theta), slope).
-            """
-            return sorted(
-                hough_lines,
-                key=lambda line: (
-                    1 / (abs(line[4]) ** (1 / slope_exponent)) - distance_coefficient
-                ),
-            )
+        Returns:
+            List[Tuple[float, float, float, float, float]]: Sorted list of hough line tuple. (x0, y0, cos(theta), sin(theta), slope).
+        """
+        return sorted(
+            hough_lines,
+            key=lambda line: (
+                1 / (abs(line[4]) ** (1 / slope_exponent)) - distance_coefficient
+            ),
+        )
